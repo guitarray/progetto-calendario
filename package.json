@@ -1,5 +1,5 @@
 {
-  "name": "firt-project-vue",
+  "name": "progetto-calendario",
   "version": "0.0.0",
   "private": true,
   "type": "module",
@@ -9,16 +9,16 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview",
-    "postinstall": "npm install --legacy-peer-deps"
+    "preview": "vite preview"
+     
   },
   "dependencies": {
+   "@vitejs/plugin-vue": "^5.2.4",
     "crypto-browserify": "^3.12.1",
+    "vite": "^6.2.0",
     "vue": "^3.5.18"
   },
-  "devDependencies": {
-    "@vitejs/plugin-vue": "^4.3.3",
-    "vite": "^4.4.9",
-    "vite-plugin-vue-devtools": "^8.0.0"
+  "devDependencies": {    
+    "vite-plugin-vue-devtools": "^8.0.1"
   }
 }
