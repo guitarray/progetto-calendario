@@ -1,8 +1,8 @@
 import { createHash } from 'crypto';
-globalThis.crypto = {
+/*globalThis.crypto = {
   ...globalThis.crypto,
   hash: (alg) => createHash(alg),
-};
+};*/
 import { fileURLToPath, URL } from 'node:url'
 
 import { defineConfig } from 'vite'
