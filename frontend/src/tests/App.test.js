@@ -1,5 +1,6 @@
+import { test, expect } from 'vitest'
 import { mount } from '@vue/test-utils'
-import HelloWorld from '../frontend/src/App.vue'
+import App from '../App.vue'
 
 test('renders message', () => {
   const wrapper = mount(App, { props: { msg: 'pronto' } })
