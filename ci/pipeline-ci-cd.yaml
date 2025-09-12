@@ -11,12 +11,13 @@ spec:
         workspaces:
           - name: source
         steps:
-          - name: clone-and-npm-install
+          - name: npm-install
             image: node:20
             script: |
               #!/bin/sh
-              git clone https://github.com/guitarray/progetto-calendario.git $(workspaces.source.path)
-              cd $(workspaces.source.path)
+              mkdir -p $(workspaces.source.path)/app
+              git clone https://github.com/guitarray/progetto-calendario.git $(workspaces.source.path)/app
+              cd $(workspaces.source.path)/app
               npm install
 
     - name: test
@@ -29,7 +30,7 @@ spec:
             image: node:20
             script: |
               #!/bin/sh
-              cd $(workspaces.source.path)
+              cd $(workspaces.source.path)/app
               npm run test
 
     - name: build
@@ -42,7 +43,7 @@ spec:
             image: node:20
             script: |
               #!/bin/sh
-              cd $(workspaces.source.path)
+              cd $(workspaces.source.path)/app
               npm run build
 
     - name: deploy
@@ -54,7 +55,7 @@ spec:
       params:
         - name: SCRIPT
           value: |
-            oc start-build progetto-calendario --from-dir=$(workspaces.source.path)/dist --wait
+            oc start-build progetto-calendario --from-dir=$(workspaces.source.path)/app/dist --wait
       workspaces:
         - name: source
           workspace: source
