@@ -7,9 +7,10 @@ export default defineConfig({
     globals: true,         // abilita test() e expect() globali
     environment: 'jsdom',  // simula il DOM
     coverage: {
-      provider: 'c8',
+      provider: 'v8',
       reporter: ['text', 'html'], // genera report testuali e HTML
       all: true,
+      reportsDirectory: './coverage'
     },
   },
 })
