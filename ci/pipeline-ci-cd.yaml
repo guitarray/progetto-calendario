@@ -6,7 +6,20 @@ spec:
   workspaces:
     - name: source
   tasks:
+    - name: clone
+      taskSpec:
+        workspaces:
+          - name: source
+        steps:
+          - name: git-clone
+            image: alpine/git
+            script: |
+              #!/bin/sh
+              echo "Cloning repository..."
+              git clone https://github.com/guitarray/progetto-calendario.git $(workspaces.source.path)
+
     - name: install
+      runAfter: ["clone"]
       taskSpec:
         workspaces:
           - name: source
@@ -15,8 +28,6 @@ spec:
             image: node:20
             script: |
               #!/bin/sh
-              echo "Cloning repository..."
-              git clone https://github.com/guitarray/progetto-calendario.git $(workspaces.source.path)
               cd $(workspaces.source.path)
               npm install
 
@@ -32,9 +43,6 @@ spec:
               #!/bin/sh
               cd $(workspaces.source.path)
               npm run test
-      workspaces:
-        - name: source
-          workspace: source
 
     - name: build
       runAfter: ["test"]
