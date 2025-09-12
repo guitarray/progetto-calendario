@@ -1,0 +1,64 @@
+apiVersion: tekton.dev/v1beta1
+kind: Pipeline
+metadata:
+  name: progetto-calendario-ci-cd
+spec:
+  params:
+    - name: GIT_REPO
+      type: string
+    - name: GIT_REVISION
+      type: string
+      default: "main"
+  tasks:
+    - name: git-clone
+      taskSpec:
+        steps:
+          - name: clone
+            image: alpine/git
+            script: |
+              #!/bin/sh
+              git clone -b $(params.GIT_REVISION) $(params.GIT_REPO) /workspace/source
+
+    - name: install
+      runAfter: ["git-clone"]
+      taskSpec:
+        steps:
+          - name: npm-install
+            image: node:20
+            workingDir: /workspace/source
+            script: |
+              #!/bin/sh
+              npm install
+
+    - name: test
+      runAfter: ["install"]
+      taskSpec:
+        steps:
+          - name: npm-test
+            image: node:20
+            workingDir: /workspace/source
+            script: |
+              #!/bin/sh
+              npm run test -- --coverage
+
+    - name: build
+      runAfter: ["test"]
+      taskSpec:
+        steps:
+          - name: npm-build
+            image: node:20
+            workingDir: /workspace/source
+            script: |
+              #!/bin/sh
+              npm run build
+
+    - name: deploy
+      runAfter: ["build"]
+      taskSpec:
+        steps:
+          - name: oc-deploy
+            image: registry.access.redhat.com/openshift4/ose-cli:latest
+            script: |
+              #!/bin/sh
+              oc apply -f /workspace/source/k8s/deployment.yaml
+              oc rollout status deployment/progetto-calendario
