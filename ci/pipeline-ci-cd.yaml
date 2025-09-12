@@ -54,6 +54,4 @@ spec:
         - name: SCRIPT
           value: |
             oc start-build progetto-calendario --from-dir=$(workspaces.source.path)/dist --wait
-      workspaces:
-        - name: source
-          workspace: source
+      
