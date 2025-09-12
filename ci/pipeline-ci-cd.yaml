@@ -12,12 +12,13 @@ spec:
           - name: source
         steps:
           - name: clone-and-npm-install
-            image: alpine/git
+            image: node:20
             script: |
               #!/bin/sh
               git clone https://github.com/guitarray/progetto-calendario.git $(workspaces.source.path)
               cd $(workspaces.source.path)
               npm install
+
     - name: test
       runAfter: ["install"]
       taskSpec:
@@ -30,6 +31,7 @@ spec:
               #!/bin/sh
               cd $(workspaces.source.path)
               npm run test
+
     - name: build
       runAfter: ["test"]
       taskSpec:
@@ -42,6 +44,7 @@ spec:
               #!/bin/sh
               cd $(workspaces.source.path)
               npm run build
+
     - name: deploy
       runAfter: ["build"]
       taskRef:
@@ -52,3 +55,6 @@ spec:
         - name: SCRIPT
           value: |
             oc start-build progetto-calendario --from-dir=$(workspaces.source.path)/dist --wait
+      workspaces:
+        - name: source
+          workspace: source
