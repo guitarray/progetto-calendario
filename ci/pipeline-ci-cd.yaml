@@ -32,9 +32,9 @@ spec:
               #!/bin/sh
               cd $(workspaces.source.path)
               npm run test
-        workspaces:
-          - name: source
-            workspace: source
+      workspaces:
+        - name: source
+          workspace: source
 
     - name: build
       runAfter: ["test"]
