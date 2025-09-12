@@ -28,7 +28,7 @@ spec:
             image: node:20
             script: |
               #!/bin/sh
-              cd $(workspaces.source.path)
+              cd $(workspaces.source.path)/progetto-calendario
               npm install
 
     - name: test
@@ -41,7 +41,7 @@ spec:
             image: node:20
             script: |
               #!/bin/sh
-              cd $(workspaces.source.path)
+              cd $(workspaces.source.path)/progetto-calendario
               npm run test
 
     - name: build
@@ -54,7 +54,7 @@ spec:
             image: node:20
             script: |
               #!/bin/sh
-              cd $(workspaces.source.path)
+              cd $(workspaces.source.path)/progetto-calendario
               npm run build
 
     - name: deploy
