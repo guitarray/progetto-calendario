@@ -6,21 +6,7 @@ spec:
   workspaces:
     - name: source
   tasks:
-    - name: clone
-      taskSpec:
-        workspaces:
-          - name: source
-        steps:
-          - name: git-clone
-            image: alpine/git
-            script: |
-              #!/bin/sh
-              echo "Cloning repository..."
-              rm -rf $(workspaces.source.path)/*
-              git clone https://github.com/guitarray/progetto-calendario.git $(workspaces.source.path)
-
     - name: install
-      runAfter: ["clone"]
       taskSpec:
         workspaces:
           - name: source
