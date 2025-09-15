@@ -1,0 +1,10 @@
+apiVersion: tekton.dev/v1beta1
+kind: PipelineRun
+metadata:
+  name: calendario-ci-cd-run
+spec:
+  pipelineRef:
+    name: calendario-ci-cd
+  workspaces:
+    - name: source
+      emptyDir: {}
