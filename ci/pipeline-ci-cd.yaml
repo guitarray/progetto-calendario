@@ -4,56 +4,38 @@ metadata:
   name: calendario-ci-cd
 spec:
   workspaces:
-    - name: source
+    - name: shared-workspace
   tasks:
+    - name: clone
+      taskSpec:
+        workspaces:
+          - name: output
+        steps:
+          - name: git-clone
+            image: alpine/git
+            script: |
+              #!/bin/sh
+              echo "Cloning repository..."
+              git clone https://github.com/guitarray/progetto-calendario.git $(workspaces.output.path)
+              ls -l $(workspaces.output.path)
+      workspaces:
+        - name: output
+          workspace: shared-workspace
+
     - name: install
+      runAfter: ["clone"]
       taskSpec:
         workspaces:
           - name: source
         steps:
           - name: npm-install
             image: node:20
+            workingDir: $(workspaces.source.path)
             script: |
               #!/bin/sh
-              cd $(workspaces.source.path)
+              echo "Running npm install in $(workspaces.source.path)"
+              ls -l
               npm install
-
-    - name: test
-      runAfter: ["install"]
-      taskSpec:
-        workspaces:
-          - name: source
-        steps:
-          - name: npm-test
-            image: node:20
-            script: |
-              #!/bin/sh
-              cd $(workspaces.source.path)
-              npm run test
-
-    - name: build
-      runAfter: ["test"]
-      taskSpec:
-        workspaces:
-          - name: source
-        steps:
-          - name: npm-build
-            image: node:20
-            script: |
-              #!/bin/sh
-              cd $(workspaces.source.path)
-              npm run build
-
-    - name: deploy
-      runAfter: ["build"]
-      taskRef:
-        apiVersion: tekton.dev/v1beta1
-        kind: ClusterTask
-        name: openshift-client
-      params:
-        - name: SCRIPT
-          value: |
-            oc start-build progetto-calendario --from-dir=$(workspaces.source.path)/dist --wait
       workspaces:
         - name: source
-          workspace: source
+          workspace: shared-workspace
