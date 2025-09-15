@@ -6,7 +6,6 @@ spec:
   pipelineRef:
     name: calendario-ci-cd
   workspaces:
-    - name: source
-      git:
-        url: https://github.com/guitarray/progetto-calendario.git
-        revision: main  # oppure master se il tuo branch principale si chiama così
+    - name: shared-workspace
+      emptyDir: {}
+  params: []
