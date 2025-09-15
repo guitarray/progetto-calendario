@@ -17,7 +17,7 @@ spec:
               #!/bin/sh
               echo "Cloning repository..."
               rm -rf $(workspaces.source.path)/*
-              git clone https://github.com/guitarray/progetto-calendario.git $(workspaces.source.path)/
+              git clone https://github.com/guitarray/progetto-calendario.git $(workspaces.source.path)
 
     - name: install
       runAfter: ["clone"]
@@ -29,7 +29,7 @@ spec:
             image: node:20
             script: |
               #!/bin/sh
-              cd $(workspaces.source.path)/workspace/source/
+              cd $(workspaces.source.path)
               npm install
 
     - name: test
@@ -42,7 +42,7 @@ spec:
             image: node:20
             script: |
               #!/bin/sh
-              cd $(workspaces.source.path)/workspace/source/
+              cd $(workspaces.source.path)
               npm run test
 
     - name: build
@@ -55,7 +55,7 @@ spec:
             image: node:20
             script: |
               #!/bin/sh
-              cd $(workspaces.source.path)/workspace/source/
+              cd $(workspaces.source.path)
               npm run build
 
     - name: deploy
