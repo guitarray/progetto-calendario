@@ -18,6 +18,7 @@ spec:
               echo "Cloning repository..."
               rm -rf $(workspaces.source.path)/*
               git clone https://github.com/guitarray/progetto-calendario.git $(workspaces.source.path)
+              ls -l $(workspaces.source.path)
 
     - name: install
       runAfter: ["clone"]
